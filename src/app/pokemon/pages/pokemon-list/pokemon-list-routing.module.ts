@@ -6,6 +6,6 @@ const routes: Routes = [{ path: '', component: PokemonListComponent }];
 
 @NgModule({
   imports: [RouterModule.forChild(routes)],
-  exports: [RouterModule]
+  exports: [RouterModule],
 })
-export class PokemonListRoutingModule { }
+export class PokemonListRoutingModule {}

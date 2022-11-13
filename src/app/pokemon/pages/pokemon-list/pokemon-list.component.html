@@ -1,4 +1,12 @@
-<div class="d-grid">
-  <app-pokemon-card *ngFor="let pokemon of [].constructor(20)"></app-pokemon-card>
+<div
+  class="d-grid"
+  infiniteScroll
+  [infiniteScrollDistance]="3"
+  [infiniteScrollThrottle]="50"
+  (scrolled)="onScroll()"
+>
+  <app-pokemon-card
+    *ngFor="let pokemon of pokemonList$ | async"
+    [pokemon]="pokemon"
+  ></app-pokemon-card>
 </div>
-
