@@ -4,14 +4,21 @@ import { RouterModule, Routes } from '@angular/router';
 const routes: Routes = [
   {
     path: '',
-    redirectTo: 'pokemons',
+    redirectTo: 'pokemon',
     pathMatch: 'full',
   },
   {
-    path: 'pokemons',
+    path: 'pokemon',
     loadChildren: () =>
       import('./pokemon/pages/pokemon-list/pokemon-list.module').then(
         (m) => m.PokemonListModule
+      ),
+  },
+  {
+    path: 'pokemon/:pokemonId',
+    loadChildren: () =>
+      import('./pokemon/pages/pokemon-detail/pokemon-detail.module').then(
+        (m) => m.PokemonDetailModule
       ),
   },
 ];

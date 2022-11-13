@@ -1,4 +1,5 @@
 import { Component, OnInit, Input } from '@angular/core';
+import { Router } from '@angular/router';
 import { Pokemon } from '../../models/pokemon';
 
 @Component({
@@ -9,7 +10,11 @@ import { Pokemon } from '../../models/pokemon';
 export class PokemonCardComponent implements OnInit {
   @Input() pokemon!: Pokemon;
 
-  constructor() {}
+  constructor(private router: Router) {}
 
   ngOnInit(): void {}
+
+  getPokemonDetails() {
+    this.router.navigate(['/pokemon', this.pokemon.id]);
+  }
 }

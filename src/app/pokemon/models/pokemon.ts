@@ -32,7 +32,7 @@ export interface Pokemon {
   weight: number;
   stats: Stat[];
   types: Type[];
-  /** */
+  /** non typed */
   species: any;
   sprites: any;
   abilities: any[];
@@ -41,4 +41,6 @@ export interface Pokemon {
   held_items: any[];
   moves: any[];
   past_types: any[];
+  /** custom */
+  description?: string;
 }
