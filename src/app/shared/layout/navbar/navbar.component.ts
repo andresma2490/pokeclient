@@ -10,7 +10,6 @@ import { PokemonService } from '@app/pokemon/services/pokemon.service';
   styleUrls: ['./navbar.component.scss'],
 })
 export class NavbarComponent implements OnInit {
-  private baseUrl: string = `${environment.API_URL}/${environment.API_VERSION}`;
   searchForm = new FormGroup({
     nameOrId: new FormControl<string>(''),
   });
@@ -23,11 +22,9 @@ export class NavbarComponent implements OnInit {
     const { nameOrId } = this.searchForm.value;
 
     if (nameOrId) {
-      this.pokemonService
-        .getPokemon(`${this.baseUrl}/pokemon/${nameOrId}`)
-        .subscribe({
-          next: (pokemon) => this.pokemonService.setPokemonList([pokemon]),
-        });
+      this.pokemonService.getPokemon(nameOrId).subscribe({
+        next: (pokemon) => this.pokemonService.setPokemonList([pokemon]),
+      });
     } else {
       this.pokemonService.pokemonListUrl = `${environment.API_URL}/${environment.API_VERSION}/pokemon`;
       this.pokemonService.setPokemonList([]);

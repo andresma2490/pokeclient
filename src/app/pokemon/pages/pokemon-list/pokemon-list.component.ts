@@ -1,4 +1,6 @@
 import { Component, OnInit } from '@angular/core';
+import { switchMap, of } from 'rxjs';
+import { take } from 'rxjs/operators';
 
 import { PokemonService } from '../../services/pokemon.service';
 
@@ -13,7 +15,16 @@ export class PokemonListComponent implements OnInit {
   constructor(private pokemonService: PokemonService) {}
 
   ngOnInit(): void {
-    this.pokemonService.getPokemonList().subscribe();
+    this.pokemonList$
+      .pipe(
+        take(1),
+        switchMap((pokemonList) => {
+          return pokemonList.length === 0
+            ? this.pokemonService.getPokemonList()
+            : of(null);
+        })
+      )
+      .subscribe();
   }
 
   onScroll() {

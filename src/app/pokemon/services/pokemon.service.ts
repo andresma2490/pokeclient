@@ -10,11 +10,10 @@ import { Paginator, Pokemon } from '../models/pokemon';
   providedIn: 'root',
 })
 export class PokemonService {
+  private baseUrl: string = `${environment.API_URL}/${environment.API_VERSION}`;
   private pokemonList = new BehaviorSubject<Pokemon[]>([]);
   pokemonList$ = this.pokemonList.asObservable();
-  pokemonListUrl:
-    | string
-    | null = `${environment.API_URL}/${environment.API_VERSION}/pokemon`;
+  pokemonListUrl: string | null = `${this.baseUrl}/pokemon`;
 
   constructor(private http: HttpClient) {}
 
@@ -26,7 +25,7 @@ export class PokemonService {
     return this.http.get<Paginator>(this.pokemonListUrl!).pipe(
       tap((res) => (this.pokemonListUrl = res.next)),
       map((res) => {
-        return res.results.map((obj) => this.getPokemon(obj.url));
+        return res.results.map((obj) => this.getPokemon(null, obj.url));
       }),
       switchMap((list$) => {
         return forkJoin(list$).pipe(
@@ -38,7 +37,8 @@ export class PokemonService {
     );
   }
 
-  getPokemon(url: string) {
+  getPokemon(nameOrId: string | null, url: string | null = null) {
+    if (!url) url = `${this.baseUrl}/pokemon/${nameOrId}`;
     return this.http.get<Pokemon>(url);
   }
 }
