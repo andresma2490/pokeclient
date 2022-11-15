@@ -1,5 +1,7 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
+import { IsLoggedInGuard } from './auth/guards/is-logged-in.guard';
+import { IsLoggedOutGuard } from './auth/guards/is-logged-out.guard';
 
 const routes: Routes = [
   {
@@ -16,6 +18,7 @@ const routes: Routes = [
   },
   {
     path: 'pokemon/:pokemonId',
+    canActivate: [IsLoggedInGuard],
     loadChildren: () =>
       import('./pokemon/pages/pokemon-detail/pokemon-detail.module').then(
         (m) => m.PokemonDetailModule
@@ -23,11 +26,13 @@ const routes: Routes = [
   },
   {
     path: 'auth/login',
+    canActivate: [IsLoggedOutGuard],
     loadChildren: () =>
       import('./auth/pages/login/login.module').then((m) => m.LoginModule),
   },
   {
     path: 'auth/register',
+    canActivate: [IsLoggedOutGuard],
     loadChildren: () =>
       import('./auth/pages/register/register.module').then(
         (m) => m.RegisterModule

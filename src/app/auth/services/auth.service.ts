@@ -16,7 +16,7 @@ export class AuthService {
   constructor(private router: Router, private http: HttpClient) {}
 
   private handleSuccessfulLogin(token: string): void {
-    localStorage.setItem('access_token', token);
+    localStorage.setItem('token', token);
     this.isLoggedIn.next(true);
     this.redirectToHome();
   }
@@ -30,25 +30,27 @@ export class AuthService {
   }
 
   getToken() {
-    return localStorage.getItem('access_token');
+    return localStorage.getItem('token');
   }
 
   redirectToHome() {
     this.router.navigate(['/']);
   }
 
-  login(email: string, password: string) {
-    return this.http
-      .post(`${this.baseUrl}/auth/login`, { email, password })
-      .pipe(
-        tap((res: any) => {
-          this.handleSuccessfulLogin(res['access_token']);
-        })
-      );
+  register(user: { nickname: string; password: string }) {
+    return this.http.post<any>(`${this.baseUrl}/register`, user);
+  }
+
+  login(nickname: string, password: string) {
+    return this.http.post(`${this.baseUrl}/login`, { nickname, password }).pipe(
+      tap((res: any) => {
+        this.handleSuccessfulLogin(res['token']);
+      })
+    );
   }
 
   logout() {
-    localStorage.removeItem('access_token');
+    localStorage.removeItem('token');
     this.isLoggedIn.next(false);
   }
 }

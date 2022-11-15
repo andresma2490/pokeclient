@@ -1,27 +1,47 @@
-<form class="container">
+<form [formGroup]="registerForm" class="container">
   <div class="card mx-auto">
     <div class="card-body p-5 pb-4">
-      <label for="name">name</label>
-      <input required id="name" name="name" type="text" class="form-control" />
+      <label for="nickname">nickname</label>
+      <input
+        formControlName="nickname"
+        id="nickname"
+        name="nickname"
+        type="text"
+        class="form-control"
+      />
 
-      <div ngModelGroup="passwordForm" passwordsMustBeEquals>
+      <div formGroupName="passwordForm">
         <label class="mt-3" for="password">password</label>
         <input
-          required
+          formControlName="password"
           id="password"
           name="password"
           type="password"
           class="form-control"
         />
 
-        <label class="mt-3" for="passwordConfirm">confirm password</label>
+        <label class="mt-3" for="confirmPassword">confirm password</label>
         <input
-          required
-          id="passwordConfirm"
-          name="passwordConfirm"
+          formControlName="confirmPassword"
+          id="confirmPassword"
+          name="confirmPassword"
           type="password"
           class="form-control"
         />
+      </div>
+
+      <div
+        *ngIf="
+          passwordForm?.invalid &&
+          (passwordForm?.touched || passwordForm?.dirty)
+        "
+      >
+        <span
+          *ngIf="passwordForm?.hasError('passwordsMustBeEquals')"
+          class="text-danger"
+        >
+          password must be equals
+        </span>
       </div>
 
       <div class="text-center mt-4">

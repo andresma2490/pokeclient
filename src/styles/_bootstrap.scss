@@ -1,1 +1,6 @@
 @import "../../node_modules/bootstrap/scss/bootstrap.scss";
+
+.ng-touched.ng-invalid:is(input, textarea, select),
+.ng-touched.ng-invalid.ng-dirty:is(input, textarea, select) {
+  @extend .is-invalid;
+}
