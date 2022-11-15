@@ -1,5 +1,7 @@
 import { Component, OnInit, Input } from '@angular/core';
 import { Router } from '@angular/router';
+import { AuthService } from '@app/auth/services/auth.service';
+import { take } from 'rxjs';
 import { Pokemon } from '../../models/pokemon';
 
 @Component({
@@ -9,12 +11,25 @@ import { Pokemon } from '../../models/pokemon';
 })
 export class PokemonCardComponent implements OnInit {
   @Input() pokemon!: Pokemon;
+  isLoggedIn = false;
 
-  constructor(private router: Router) {}
+  constructor(private authService: AuthService, private router: Router) {}
 
-  ngOnInit(): void {}
+  ngOnInit(): void {
+    this.authService.isLoggedIn$.pipe(take(1)).subscribe({
+      next: (isLoggedIn) => (this.isLoggedIn = isLoggedIn),
+    });
+  }
+
+  showAlert() {
+    document.getElementById('openAlertModalButton')?.click();
+  }
 
   getPokemonDetails() {
-    this.router.navigate(['/pokemon', this.pokemon.id]);
+    if (this.isLoggedIn) {
+      this.router.navigate(['/pokemon', this.pokemon.id]);
+    } else {
+      this.showAlert();
+    }
   }
 }

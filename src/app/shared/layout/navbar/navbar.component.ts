@@ -2,7 +2,9 @@ import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormControl } from '@angular/forms';
 
 import { environment } from '@environments/environment';
+import { AuthService } from '@app/auth/services/auth.service';
 import { PokemonService } from '@app/pokemon/services/pokemon.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-navbar',
@@ -10,11 +12,16 @@ import { PokemonService } from '@app/pokemon/services/pokemon.service';
   styleUrls: ['./navbar.component.scss'],
 })
 export class NavbarComponent implements OnInit {
+  isLoggedIn$ = this.authService.isLoggedIn$;
   searchForm = new FormGroup({
     nameOrId: new FormControl<string>(''),
   });
 
-  constructor(private pokemonService: PokemonService) {}
+  constructor(
+    private router: Router,
+    private authService: AuthService,
+    private pokemonService: PokemonService
+  ) {}
 
   ngOnInit(): void {}
 
@@ -30,5 +37,10 @@ export class NavbarComponent implements OnInit {
       this.pokemonService.setPokemonList([]);
       this.pokemonService.getPokemonList().subscribe();
     }
+    this.router.navigate(['/']);
+  }
+
+  logout() {
+    this.authService.logout();
   }
 }

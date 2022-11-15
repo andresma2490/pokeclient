@@ -21,6 +21,26 @@ const routes: Routes = [
         (m) => m.PokemonDetailModule
       ),
   },
+  {
+    path: 'auth/login',
+    loadChildren: () =>
+      import('./auth/pages/login/login.module').then((m) => m.LoginModule),
+  },
+  {
+    path: 'auth/register',
+    loadChildren: () =>
+      import('./auth/pages/register/register.module').then(
+        (m) => m.RegisterModule
+      ),
+  },
+  {
+    path: '**',
+    pathMatch: 'full',
+    loadChildren: () =>
+      import('./page-not-found/page-not-found.module').then(
+        (m) => m.PageNotFoundModule
+      ),
+  },
 ];
 
 @NgModule({

@@ -1,7 +1,7 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { BehaviorSubject, switchMap, forkJoin } from 'rxjs';
-import { map, tap } from 'rxjs/operators';
+import { BehaviorSubject, switchMap, forkJoin, throwError } from 'rxjs';
+import { catchError, map, tap } from 'rxjs/operators';
 
 import { environment } from '@environments/environment';
 import { Paginator, Pokemon } from '../models/pokemon';
@@ -13,7 +13,7 @@ export class PokemonService {
   private baseUrl: string = `${environment.API_URL}/${environment.API_VERSION}`;
   private pokemonList = new BehaviorSubject<Pokemon[]>([]);
   pokemonList$ = this.pokemonList.asObservable();
-  pokemonListUrl: string | null = `${this.baseUrl}/pokemon`;
+  pokemonListUrl: string | null = `${this.baseUrl}`;
 
   constructor(private http: HttpClient) {}
 
@@ -23,6 +23,12 @@ export class PokemonService {
 
   getPokemonList() {
     return this.http.get<Paginator>(this.pokemonListUrl!).pipe(
+      catchError((error: HttpErrorResponse) => {
+        if (error.status == 401) {
+          document.getElementById('openAlertModalButton')?.click();
+        }
+        return throwError(() => error);
+      }),
       tap((res) => (this.pokemonListUrl = res.next)),
       map((res) => {
         return res.results.map((obj) => this.getPokemon(null, obj.url));
