@@ -2,7 +2,7 @@
   class="navbar navbar-expand-lg navbar-light bg-light border-bottom shadow position-fixed w-100"
   aria-label="Offcanvas navbar"
 >
-  <div class="container-md">
+  <div class="container-md flex-nowrap">
     <a class="navbar-brand m-0" [routerLink]="['/']">
       <img id="logo" src="/assets/icons/pokeballx96.png" alt="image" />
       <span class="d-none d-md-inline-block me-2">Pokedex</span>
@@ -20,7 +20,7 @@
       </button>
     </form>
     <button
-      class="navbar-toggler"
+      class="navbar-toggler ms-1"
       type="button"
       data-bs-toggle="offcanvas"
       data-bs-target="#offcanvasNavbar"
@@ -38,7 +38,7 @@
         <h5 class="offcanvas-title" id="offcanvasNavbarLabel">Menu</h5>
         <button
           type="button"
-          class="btn-close btn-close-white"
+          class="btn-close"
           data-bs-dismiss="offcanvas"
           aria-label="Close"
         ></button>
@@ -46,12 +46,19 @@
       <div class="offcanvas-body">
         <ul class="navbar-nav justify-content-end flex-grow-1 pe-3">
           <li class="nav-item">
-            <a class="nav-link" [routerLink]="['/']">Home</a>
+            <a class="nav-link" data-bs-dismiss="offcanvas" [routerLink]="['/']"
+              >Home</a
+            >
           </li>
 
           <ng-container *ngIf="!(isLoggedIn$ | async); else notLoggedIn">
             <li class="nav-item">
-              <a class="nav-link" [routerLink]="['/auth', 'login']">Login</a>
+              <a
+                class="nav-link"
+                data-bs-dismiss="offcanvas"
+                [routerLink]="['/auth', 'login']"
+                >Login</a
+              >
             </li>
           </ng-container>
           <ng-template #notLoggedIn>
@@ -69,6 +76,7 @@
                 <li class="nav-item">
                   <a
                     class="nav-link px-3"
+                    data-bs-dismiss="offcanvas"
                     href="javascript:void(0)"
                     (click)="logout()"
                   >
